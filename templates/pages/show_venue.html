@@ -89,7 +89,7 @@
         // AJAX request to GET edit page
         const request_delete = new XMLHttpRequest();
 
-        const url = `/venues/delete/${venue_id}`;
+		const url = `/venues/${venue_id}/delete`;
         request_delete.open('GET', url);
 
         request_delete.onload = () => {

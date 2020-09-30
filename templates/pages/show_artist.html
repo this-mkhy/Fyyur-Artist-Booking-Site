@@ -40,7 +40,8 @@
 		{% endif %}
 	</div>
 	<div class="col-sm-6">
-		<img src="{{ artist.image_link }}" alt="Artist Image" />
+		{% if artist.image_link %}<img src="{{ artist.image_link }}" alt="Artist Image" />{% endif %}
+
 	</div>
 </div>
 <section>
@@ -71,6 +72,37 @@
 		{% endfor %}
 	</div>
 </section>
+
+<!-- Add this to the view -->
+<section>
+    <a href='/artists/{{ artist.id }}/edit'><button class="btn btn-default btn-sm">Edit Artist</button></a>
+    <button type="submit" onclick="deleteArtist(this)" data-id="{{ artist.id }}" class="btn btn-default btn-sm"
+        style="width: 100px;">Delete Artist</button>
+</section>
+
+<script>
+    function deleteArtist(e) {
+        const artist_id = e.dataset.id;
+
+        // AJAX request to server to GET edit page
+        const request_delete = new XMLHttpRequest();
+        const url = `/artists/${artist_id}/delete`;
+        request_delete.open('GET', url);
+
+        request_delete.onload = () => {
+            const data = JSON.parse(request_delete.responseText);
+
+            // If delete was successful, redirect
+            if (data['deleted'] == true) {
+                window.location.href = data['url'];
+            }
+        }
+
+        // Send the request
+        request_delete.send( null );
+        return false;
+    }
+</script>
 
 {% endblock %}
 
