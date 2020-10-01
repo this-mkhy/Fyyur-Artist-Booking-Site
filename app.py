@@ -1,5 +1,7 @@
 #----------------------------------------------------------------------------#
 # Imports
+# https://www.codementor.io/@sheena/understanding-sqlalchemy-cheat-sheet-du107lawl
+# https://s3.us-east-2.amazonaws.com/prettyprinted/flask_cheatsheet.pdf
 #----------------------------------------------------------------------------#
 
 import json
@@ -34,7 +36,7 @@ migrate = Migrate(app, db)
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
-
+# defined the models and relations
 # the Genre table here 
 class Genre(db.Model):
     __tablename__ = 'Genre'
@@ -128,7 +130,7 @@ def format_datetime(value, format='medium'):
   elif format == 'medium':
       format="EE MM, dd, y h:mma"
   return babel.dates.format_datetime(date, format)
-
+# this filter helper that used at the show page. It makes it user interactivity interesting.
 app.jinja_env.filters['datetime'] = format_datetime
 
 #----------------------------------------------------------------------------#
@@ -217,6 +219,7 @@ def search_venues():
   # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
   search_term = request.form.get('search_term', '').strip()
 
+  # using ilike operator instead of like operator to match case insensitive
   venues = Venue.query.filter(Venue.name.ilike('%' + search_term + '%')).all() 
   print(venues)
   venue_list = []
@@ -327,60 +330,7 @@ def show_venue(venue_id):
   #     "past_shows_count": 1,
   #     "upcoming_shows_count": 0,
   # }
-  # data2 = {
-  #     "id": 2,
-  #     "name": "The Dueling Pianos Bar",
-  #     "genres": ["Classical", "R&B", "Hip-Hop"],
-  #     "address": "335 Delancey Street",
-  #     "city": "New York",
-  #     "state": "NY",
-  #     "phone": "914-003-1132",
-  #     "website": "https://www.theduelingpianos.com",
-  #     "facebook_link": "https://www.facebook.com/theduelingpianos",
-  #     "seeking_talent": False,
-  #     "image_link": "https://images.unsplash.com/photo-1497032205916-ac775f0649ae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-  #     "past_shows": [],
-  #     "upcoming_shows": [],
-  #     "past_shows_count": 0,
-  #     "upcoming_shows_count": 0,
-  # }
-  # data3 = {
-  #     "id": 3,
-  #     "name": "Park Square Live Music & Coffee",
-  #     "genres": ["Rock n Roll", "Jazz", "Classical", "Folk"],
-  #     "address": "34 Whiskey Moore Ave",
-  #     "city": "San Francisco",
-  #     "state": "CA",
-  #     "phone": "415-000-1234",
-  #     "website": "https://www.parksquarelivemusicandcoffee.com",
-  #     "facebook_link": "https://www.facebook.com/ParkSquareLiveMusicAndCoffee",
-  #     "seeking_talent": False,
-  #     "image_link": "https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80",
-  #     "past_shows": [{
-  #         "artist_id": 5,
-  #         "artist_name": "Matt Quevedo",
-  #         "artist_image_link": "https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-  #         "start_time": "2019-06-15T23:00:00.000Z"
-  #     }],
-  #     "upcoming_shows": [{
-  #         "artist_id": 6,
-  #         "artist_name": "The Wild Sax Band",
-  #         "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-  #         "start_time": "2035-04-01T20:00:00.000Z"
-  #     }, {
-  #         "artist_id": 6,
-  #         "artist_name": "The Wild Sax Band",
-  #         "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-  #         "start_time": "2035-04-08T20:00:00.000Z"
-  #     }, {
-  #         "artist_id": 6,
-  #         "artist_name": "The Wild Sax Band",
-  #         "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-  #         "start_time": "2035-04-15T20:00:00.000Z"
-  #     }],
-  #     "past_shows_count": 1,
-  #     "upcoming_shows_count": 1,
-  # }
+
   # data = list(filter(lambda d: d['id'] ==
   #                    venue_id, [data1, data2, data3]))[0]
   return render_template('pages/show_venue.html', venue=data)
@@ -633,55 +583,7 @@ def show_artist(artist_id):
   #     "past_shows_count": 1,
   #     "upcoming_shows_count": 0,
   # }
-  # data2 = {
-  #     "id": 5,
-  #     "name": "Matt Quevedo",
-  #     "genres": ["Jazz"],
-  #     "city": "New York",
-  #     "state": "NY",
-  #     "phone": "300-400-5000",
-  #     "facebook_link": "https://www.facebook.com/mattquevedo923251523",
-  #     "seeking_venue": False,
-  #     "image_link": "https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-  #     "past_shows": [{
-  #         "venue_id": 3,
-  #         "venue_name": "Park Square Live Music & Coffee",
-  #         "venue_image_link": "https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80",
-  #         "start_time": "2019-06-15T23:00:00.000Z"
-  #     }],
-  #     "upcoming_shows": [],
-  #     "past_shows_count": 1,
-  #     "upcoming_shows_count": 0,
-  # }
-  # data3 = {
-  #     "id": 6,
-  #     "name": "The Wild Sax Band",
-  #     "genres": ["Jazz", "Classical"],
-  #     "city": "San Francisco",
-  #     "state": "CA",
-  #     "phone": "432-325-5432",
-  #     "seeking_venue": False,
-  #     "image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-  #     "past_shows": [],
-  #     "upcoming_shows": [{
-  #         "venue_id": 3,
-  #         "venue_name": "Park Square Live Music & Coffee",
-  #         "venue_image_link": "https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80",
-  #         "start_time": "2035-04-01T20:00:00.000Z"
-  #     }, {
-  #         "venue_id": 3,
-  #         "venue_name": "Park Square Live Music & Coffee",
-  #         "venue_image_link": "https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80",
-  #         "start_time": "2035-04-08T20:00:00.000Z"
-  #     }, {
-  #         "venue_id": 3,
-  #         "venue_name": "Park Square Live Music & Coffee",
-  #         "venue_image_link": "https://images.unsplash.com/photo-1485686531765-ba63b07845a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=747&q=80",
-  #         "start_time": "2035-04-15T20:00:00.000Z"
-  #     }],
-  #     "past_shows_count": 0,
-  #     "upcoming_shows_count": 3,
-  # }
+
   # data = list(filter(lambda d: d['id'] == artist_id, [data1, data2, data3]))[0]
 
   return render_template('pages/show_artist.html', artist=data)
@@ -981,6 +883,7 @@ def create_artist_submission():
     finally:
       db.session.close()
 
+    # validating input
     if not error_in_insert:
       # on successful db insert, flash success
       flash('Artist ' + request.form['name'] + ' was successfully listed!')
@@ -1062,27 +965,6 @@ def shows():
   #     "artist_name": "Matt Quevedo",
   #     "artist_image_link": "https://images.unsplash.com/photo-1495223153807-b916f75de8c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
   #     "start_time": "2019-06-15T23:00:00.000Z"
-  # }, {
-  #     "venue_id": 3,
-  #     "venue_name": "Park Square Live Music & Coffee",
-  #     "artist_id": 6,
-  #     "artist_name": "The Wild Sax Band",
-  #     "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-  #     "start_time": "2035-04-01T20:00:00.000Z"
-  # }, {
-  #     "venue_id": 3,
-  #     "venue_name": "Park Square Live Music & Coffee",
-  #     "artist_id": 6,
-  #     "artist_name": "The Wild Sax Band",
-  #     "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-  #     "start_time": "2035-04-08T20:00:00.000Z"
-  # }, {
-  #     "venue_id": 3,
-  #     "venue_name": "Park Square Live Music & Coffee",
-  #     "artist_id": 6,
-  #     "artist_name": "The Wild Sax Band",
-  #     "artist_image_link": "https://images.unsplash.com/photo-1558369981-f9ca78462e61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=794&q=80",
-  #     "start_time": "2035-04-15T20:00:00.000Z"
   # }]
   return render_template('pages/shows.html', shows=data)
 
@@ -1126,15 +1008,41 @@ def create_show_submission():
     flash('Show was successfully listed!')
   return render_template('pages/home.html')
 
-
+# handling 404 ad 500 errors to display more specific messages to users on what exactly happened
+# not_found - 404
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('errors/404.html'), 404
 
+# server_error - 500
 @app.errorhandler(500)
 def server_error(error):
     return render_template('errors/500.html'), 500
 
+# # unauthorized - 401
+# @app.errorhandler(401)
+# def server_error(error):
+#     return render_template('errors/401.html'), 401
+    
+# # forbidden - 403
+# @app.errorhandler(403)
+# def server_error(error):
+#     return render_template('errors/403.html'), 403
+
+# # not_processable - 422
+# @app.errorhandler(422)
+# def server_error(error):
+#     return render_template('errors/422.html'), 422
+
+# # invalid_method - 405
+# @app.errorhandler(405)
+# def server_error(error):
+#     return render_template('errors/405.html'), 405
+
+# # duplicate_resource - 409
+# @app.errorhandler(409)
+# def server_error(error):
+#     return render_template('errors/409.html'), 409
 
 if not app.debug:
     file_handler = FileHandler('error.log')
